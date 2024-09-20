@@ -1,0 +1,11 @@
+{
+    "name": "ncore",
+    "displayname": "nCore",
+    "description": "Search on nCore.pro site.",
+    "site": "https://ncore.pro/",
+    "version": "2.0.0",
+    "type": "search",
+    "module": "search.php",
+    "class": "SynoDLMSearchNCore",
+    "accountsupport": true
+}
