@@ -140,7 +140,7 @@ class SynoDLMSearchNCore
                 } else {
                     ob_start();
                     var_dump($torrentData);
-                    file_put_contents("/tmp/dlm_parse_error_" . date("YmdHis") . "_" . rand(100000) . ".txt", ob_get_clean() . "\n");
+                    file_put_contents("/tmp/ncore_dlm_parse_error_" . date("YmdHis") . "_" . rand(100000) . ".txt", ob_get_clean() . "\n");
                 }
             }
         }
