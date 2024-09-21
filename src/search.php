@@ -6,6 +6,7 @@ class SynoDLMSearchNCore
     private $login_url = "https://ncore.pro/login.php";
     private $cookie_path = "/tmp/ncore.cookie";
     private $fallback_useragent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535 (KHTML, like Gecko) Chrome/14 Safari/535";
+    private $debug = false;
 
     ///////////////////
     // Synology methods
@@ -13,6 +14,7 @@ class SynoDLMSearchNCore
 
     public function prepare($curl, $query, $username = null, $password = null)
     {
+        $this->log("Prepare called with query: $query");
         if (!file_exists($this->cookie_path) && $username !== null && $password !== null) {
             $this->VerifyAccount($username, $password);
         }
@@ -29,6 +31,7 @@ class SynoDLMSearchNCore
 
     public function VerifyAccount($username, $password)
     {
+        $this->log("VerifyAccount called for user: $username");
         $post_data = array(
             "ne_leptessen_ki" => "1",
             "Submit" => "Belépés!",
@@ -60,13 +63,16 @@ class SynoDLMSearchNCore
             && preg_match("/Set-Cookie: nick=" . $username . "/iU", $login_info)
             && file_exists($this->cookie_path)
         ) {
+            $this->log("Succesful login with user: $username");
             return true;
         }
+        $this->log("Can't login with user: $username");
         return false;
     }
 
     public function parse($plugin, $response)
     {
+        $this->log("Parse called");
         preg_match("/(rss.php.*)(key=................................)/", $response, $key_k);
         $key = $key_k[2];
 
@@ -125,6 +131,14 @@ class SynoDLMSearchNCore
     /////////////////
     // Helper methods
     /////////////////
+
+    private function log($str)
+    {
+        if ($this->debug == true) {
+            $date = date("Y-m-d H:i:s", time());
+            file_put_contents("/tmp/ncore.log", "{$date}: {$str}\n", FILE_APPEND);
+        }
+    }
 
     private function configureCurl($curl)
     {
