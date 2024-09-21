@@ -31,15 +31,33 @@ class SynoDLMSearchNCore
 
     public function VerifyAccount($username, $password)
     {
-        $this->log("VerifyAccount called for user: $username");
+        $this->log("VerifyAccount called with username: $username");
+
+        $user = $username;
+        $mfa_code = "";
+        $url = $this->login_url;
+
+        // Handle 2fa code appended to username: username|2fa_code
+        if (str_contains($username, '|')) {
+            $x = explode("|", $username);
+            $user = $x[0];
+            $mfa_code = $x[1];
+            $this->log("Two-factor login with user $user and code $mfa_code");
+            $url = $this->login_url . "?2fa";
+        }
+
         $post_data = array(
             "ne_leptessen_ki" => "1",
             "Submit" => "Belépés!",
-            "nev" => $username,
+            "nev" => $user,
             "pass" => $password,
             "set_lang" => "hu",
-            "submitted" => 1,
+            "submitted" => 1
         );
+        if ($mfa_code) {
+            $post_data["2factor"] = $mfa_code;
+        }
+
         $post_data = http_build_query($post_data);
 
         $curl = curl_init();
@@ -48,8 +66,8 @@ class SynoDLMSearchNCore
         curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
 
         curl_setopt($curl, CURLOPT_COOKIEJAR, $this->cookie_path);
-        curl_setopt($curl, CURLOPT_REFERER, $this->login_url);
-        curl_setopt($curl, CURLOPT_URL, $this->login_url);
+        curl_setopt($curl, CURLOPT_REFERER, $url);
+        curl_setopt($curl, CURLOPT_URL, $url);
 
         $login_info = curl_exec($curl);
         curl_close($curl);
@@ -60,13 +78,13 @@ class SynoDLMSearchNCore
 
         if (
             false != $login_info
-            && preg_match("/Set-Cookie: nick=" . $username . "/iU", $login_info)
+            && preg_match("/Set-Cookie: nick=" . $user . "/iU", $login_info)
             && file_exists($this->cookie_path)
         ) {
-            $this->log("Succesful login with user: $username");
+            $this->log("Succesful login with user: $user");
             return true;
         }
-        $this->log("Can't login with user: $username");
+        $this->log("Can't login with user: $user");
         return false;
     }
 

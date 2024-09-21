@@ -2,9 +2,11 @@
 
 ## QuickStart
 
-Add the **ncore.dlm** in Download Station/Settings/BT Search.
+Add the **ncore.dlm** in Download Station > Settings > BT Search.
 
-If you get "error 1407" during search: restart DownloadStation in the Package Center
+If you get "error 1407" during search: restart DownloadStation in the Package Center.
+
+To login with 2FA, append the 2fa code after the user name seperated with a pipe "|" character (eg: jack|123123), and click on verify on the edit dialog.
 
 
 ## Contributing
