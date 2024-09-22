@@ -72,7 +72,7 @@ class SynoDLMSearchNCore
         $login_info = curl_exec($curl);
         curl_close($curl);
         // after php 8.0.0 curl_close() is noop,
-        // call unset() to save the cookie file
+        // call unset() to save the cookie file immediately
         // https://www.php.net/manual/en/curl.constants.php#constant.curlopt-cookiejar
         unset($curl);
 
@@ -81,7 +81,7 @@ class SynoDLMSearchNCore
             && preg_match("/Set-Cookie: nick=" . $user . "/iU", $login_info)
             && file_exists($this->cookie_path)
         ) {
-            $this->log("Succesful login with user: $user");
+            $this->log("Successful login with user: $user");
             return true;
         }
         $this->log("Can't login with user: $user");
