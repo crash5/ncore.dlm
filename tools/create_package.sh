@@ -12,6 +12,6 @@ tools/mo src/INFO.mustache > "${TEMPORARY_WORK_DIR}"/INFO
 cp src/search.php "${TEMPORARY_WORK_DIR}"/
 
 mkdir -p "${OUTPUT_PATH}"
-tar -czf "${OUTPUT_PATH}"/${RELEASE_FILE_NAME} -C "${TEMPORARY_WORK_DIR}" ./
+tar -czf "${OUTPUT_PATH}"/${RELEASE_FILE_NAME} --mode a=r,a+X -C "${TEMPORARY_WORK_DIR}" ./
 
 rm -rf "${TEMPORARY_WORK_DIR}"
