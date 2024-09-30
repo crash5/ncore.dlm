@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-readonly RELEASE_VERSION=${1:-"v0.0.0"}
+readonly RELEASE_VERSION=${1:-"0.0.0"}
 readonly OUTPUT_PATH=${2:-"output/"}
 
-readonly RELEASE_FILE_NAME=ncore_${RELEASE_VERSION}.dlm
+readonly RELEASE_FILE_NAME=ncore_v${RELEASE_VERSION}.dlm
 readonly TEMPORARY_WORK_DIR=$(mktemp -d -p .)
 
 export RELEASE_VERSION
