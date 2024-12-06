@@ -171,6 +171,8 @@ class SynoDLMSearchNCore
 
         curl_setopt($curl, CURLOPT_HEADER, true); // include the header in the output
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); // return the transfer as a string
+
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30); // maximum number of seconds to allow cURL functions to execute
     }
 
     private function getTitle($matches)
